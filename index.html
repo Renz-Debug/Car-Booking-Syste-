@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EZ Ride Taxi — Fast, Safe & Reliable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-wrapper">
+      <a href="#" class="logo">
+        <img src="logo.jfif" alt="EZ Ride Logo" class="logo-img" />
+        EZ Ride
+      </a>
+      <div class="nav-center">
+        <a href="#book">Book</a>
+        <a href="#fare">Fare</a>
+        <a href="#taxi-info">Our Taxi</a>
+        <a href="#driver">Driver</a>
+      </div>
+      <div class="nav-right">
+        <a href="#book" class="cta-btn desktop-only">Book Now</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#book" class="mobile-link">Book</a>
+      <a href="#fare" class="mobile-link">Fare</a>
+      <a href="#taxi-info" class="mobile-link">Our Taxi</a>
+      <a href="#driver" class="mobile-link">Driver</a>
+      <div class="mobile-menu-actions">
+        <a href="#book" class="cta-btn" style="justify-content:center;">Book Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="eyebrow">EZ Ride Taxi Service</span>
+        <h1>Fast, Safe &amp;<br><em>Reliable Ride.</em></h1>
+        <p>Your trusted taxi service — ready when you are. Book in advance or ride now, anytime, anywhere.</p>
+        <div class="hero-actions">
+          <a href="#book" class="cta-btn"><i class="fas fa-taxi"></i> Book Your Ride Now</a>
+          <a href="#fare" class="ghost-btn">Fare Calculator</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span>10 yrs</span>
+            <p>Experience</p>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span>5 ★</span>
+            <p>Driver rating</p>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span>₱40</span>
+            <p>Base fare</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="visual-card vc1">
+          <i class="fas fa-map-pin"></i>
+          <span>Pickup confirmed</span>
+        </div>
+        <div class="visual-orb"></div>
+        <div class="visual-taxi"><img src="logo.jfif" alt="EZ Ride" class="hero-logo-img" /></div>
+        <div class="visual-card vc2">
+          <i class="fas fa-circle status-online"></i>
+          <span>Driver Online &amp; Available</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="booking" id="book">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Reservations</span>
+        <h2>Book Your Ride</h2>
+        <p class="section-sub">Fill up the form below to get started.</p>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-form">
+
+          <!-- Location block -->
+          <div class="form-block-title"><i class="fas fa-circle-info"></i> Details Information</div>
+
+          <div class="location-inputs">
+            <div class="field-group">
+              <label>Pick-up Location</label>
+              <div class="input-row">
+                <span class="dot dot-green"></span>
+                <input type="text" id="pickup-input" placeholder="Search or click on the map…" autocomplete="off" />
+                <button class="locate-btn" id="locate-me" title="Use my location"><i
+                    class="fas fa-crosshairs"></i></button>
+              </div>
+              <div class="autocomplete-list" id="pickup-suggestions"></div>
+            </div>
+            <div class="route-line"></div>
+            <div class="field-group">
+              <label>Drop-off Location</label>
+              <div class="input-row">
+                <span class="dot dot-black"></span>
+                <input type="text" id="dropoff-input" placeholder="Search or click on the map…" autocomplete="off" />
+              </div>
+              <div class="autocomplete-list" id="dropoff-suggestions"></div>
+            </div>
+          </div>
+
+          <!-- MAP -->
+          <div class="map-wrapper">
+            <div class="map-legend">
+              <span class="legend-item"><span class="dot dot-green"></span> Pick-up</span>
+              <span class="legend-item"><span class="dot dot-black"></span> Drop-off</span>
+              <span class="map-hint"><i class="fas fa-hand-pointer"></i> Click map to set active pin</span>
+            </div>
+            <div class="map-mode-toggle">
+              <button class="map-mode active" id="mode-pickup">Setting: Pick-up</button>
+              <button class="map-mode" id="mode-dropoff">Setting: Drop-off</button>
+            </div>
+            <div id="booking-map"></div>
+          </div>
+
+          <!-- Date / Time — auto-filled -->
+          <div class="form-row">
+            <div class="field-group standalone">
+              <label><i class="fas fa-calendar"></i> Date</label>
+              <div class="datetime-display" id="auto-date">—</div>
+            </div>
+            <div class="field-group standalone">
+              <label><i class="fas fa-clock"></i> Time</label>
+              <div class="datetime-display" id="auto-time">—</div>
+            </div>
+          </div>
+
+          <!-- Passengers & Pet -->
+          <div class="form-row">
+            <div class="field-group standalone">
+              <label><i class="fas fa-users"></i> Passengers</label>
+              <div class="passenger-selector">
+                <button class="pax-btn active" data-pax="1">1</button>
+                <button class="pax-btn" data-pax="2">2</button>
+                <button class="pax-btn" data-pax="3">3</button>
+                <button class="pax-btn" data-pax="4">4</button>
+              </div>
+            </div>
+            <div class="field-group standalone">
+              <label><i class="fas fa-paw"></i> Pet</label>
+              <div class="pet-toggle-row">
+                <button class="pet-btn active" id="no-pet">Without Pet</button>
+                <button class="pet-btn" id="with-pet">With Pet 🐾</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="booking-actions">
+            <button class="ghost-btn advance-btn"><i class="fas fa-calendar-check"></i> Advance Booking</button>
+            <button class="cta-btn cta-wide"><i class="fas fa-taxi"></i> Book Now</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FARE CALCULATOR -->
+  <section class="fare-section" id="fare">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Pricing</span>
+        <h2>Fare Calculator</h2>
+        <p class="section-sub">Enter the distance to estimate your total fare.</p>
+      </div>
+
+      <div class="fare-card">8
+        <div class="fare-table">
+          <div class="fare-row fare-row-head">
+            <span>Item</span>
+            <span>Price</span>
+          </div>
+          <div class="fare-row">
+            <span>Base Fare</span>
+            <span class="fare-val">₱ 40.00</span>
+          </div>
+          <div class="fare-row fare-row-input">
+            <span>Distance</span>
+            <div class="km-input-wrap">
+              <input type="number" id="km-input" min="0" step="0.1" placeholder="0.0" />
+              <span class="km-label">km</span>
+            </div>
+          </div>
+          <div class="fare-row">
+            <span>Rate per km</span>
+            <span class="fare-val">₱ 13.00</span>
+          </div>
+          <div class="fare-divider"></div>
+          <div class="fare-row fare-total-row">
+            <span>Total Fare</span>
+            <span class="fare-total" id="total-fare">₱ 40.00</span>
+          </div>
+        </div>
+        <div class="fare-note">
+          <i class="fas fa-circle-info"></i>
+          Estimated fare only. Final price may vary based on traffic and actual route.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAXI INFO + DRIVER -->
+  <section class="taxi-info-section" id="taxi-info">
+    <div class="container taxi-info-grid">
+
+      <!-- Vehicle Details -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-icon"><i class="fas fa-car"></i></div>
+          <div>
+            <span class="eyebrow">Fleet</span>
+            <h3>Our Taxi</h3>
+          </div>
+        </div>
+
+        <!-- Car Tabs -->
+        <div class="driver-tabs">
+          <button class="driver-tab active" data-car="0">Vios</button>
+        </div>
+
+        <!-- Car 1: Toyota Vios -->
+        <div class="car-panel active" data-carpanel="0">
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">Model</span>
+              <span class="info-value">Toyota Vios 1.3 XLE</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Year</span>
+              <span class="info-value">2022</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Color</span>
+              <span class="info-value color-row">
+                <span class="color-swatch swatch-yellow"></span>Yellow &amp;
+                <span class="color-swatch swatch-white"></span>White
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Plate No.</span>
+              <span class="info-value"><span class="plate-badge">ABC 1234</span></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Seats</span>
+              <span class="info-value">4 Passengers</span>
+            </div>
+            <div class="info-item info-item-col">
+              <span class="info-label">Features</span>
+              <div class="tags-row">
+                <span class="tag">✦ Clean</span>
+                <span class="tag">✦ Air-conditioned</span>
+                <span class="tag">✦ Safe</span>
+                <span class="tag">✦ Dashcam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Driver Info -->
+      <div class="info-card driver-card" id="driver">
+        <div class="info-card-header">
+          <div class="info-icon"><i class="fas fa-steering-wheel"></i></div>
+          <div>
+            <span class="eyebrow">Our Drivers</span>
+            <h3>Meet the Team</h3>
+          </div>
+        </div>
+
+        <!-- Driver Tabs -->
+        <div class="driver-tabs">
+          <button class="driver-tab active" data-driver="0">Juan</button>
+        </div>
+
+        <!-- Driver 1: Juan Dela Cruz -->
+        <div class="driver-body driver-panel active" data-panel="0">
+          <div class="driver-photo-wrap">
+            <div class="driver-photo-placeholder">
+              <i class="fas fa-user-circle"></i>
+              <span>Driver Photo</span>
+            </div>
+            <div class="driver-status-badge">
+              <span class="status-dot"></span> Online &amp; Available
+            </div>
+          </div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">Name</span>
+              <span class="info-value">Mr. Juan Dela Cruz</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Car</span>
+              <span class="info-value"><i class="fas fa-car" style="color:var(--yellow-d);margin-right:5px;"></i>Toyota
+                Vios</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Experience</span>
+              <span class="info-value">10 Years</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Rating</span>
+              <span class="info-value"><span class="stars">★★★★★</span> 5 / 5</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Language</span>
+              <span class="info-value">English &amp; Tagalog</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Process</span>
+        <h2>Ride in four steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Enter Location</h3>
+          <p>Type in your pickup and drop-off addresses.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Set Schedule</h3>
+          <p>Pick your date, time, and passenger count.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>Book &amp; Confirm</h3>
+          <p>Tap Book Now or Advance Booking to confirm.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>Enjoy the Ride</h3>
+          <p>Your driver is on the way. Sit back and relax.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img src="logo.jfif" alt="EZ Ride Logo" class="logo-img" />
+          EZ Ride
+        </a>
+        <p>Fast, Safe &amp; Reliable Ride — always.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h5>Service</h5>
+          <a href="#book">Book a Ride</a>
+          <a href="#fare">Fare Calculator</a>
+          <a href="#how">How It Works</a>
+        </div>
+        <div>
+          <h5>Info</h5>
+          <a href="#taxi-info">Our Taxi</a>
+          <a href="#driver">Meet the Driver</a>
+        </div>
+        <div>
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2025 Yellow Cab Taxi Service. All rights reserved.</p>
+      <div class="socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ADVANCE BOOKING MODAL -->
+  <div id="advance-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="advance-modal-title"
+      style="max-width:420px;">
+      <button class="modal-close" id="advance-modal-close" aria-label="Close"><i class="fas fa-times"></i></button>
+
+      <div class="modal-header">
+        <div class="modal-icon"><i class="fas fa-calendar-check"></i></div>
+        <h2 id="advance-modal-title">Advance Booking</h2>
+        <p>Choose your preferred date and time</p>
+      </div>
+
+      <div class="modal-body" style="gap:16px;">
+        <div class="adv-field">
+          <label class="adv-label"><i class="fas fa-calendar"></i> Date</label>
+          <input type="date" id="adv-date" class="adv-input" />
+        </div>
+        <div class="adv-field">
+          <label class="adv-label"><i class="fas fa-clock"></i> Time</label>
+          <input type="time" id="adv-time" class="adv-input" />
+        </div>
+        <p class="modal-note" style="margin-top:4px;"><i class="fas fa-circle-info"></i> Our team will confirm your
+          booking via call or message.</p>
+      </div>
+
+      <div style="display:flex;gap:10px;padding:0 28px 28px;">
+        <button class="ghost-btn" id="advance-modal-cancel" style="flex:1;justify-content:center;">Cancel</button>
+        <button class="cta-btn" id="advance-modal-confirm" style="flex:1;justify-content:center;"><i
+            class="fas fa-check"></i> Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING CONFIRMATION MODAL -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close"><i class="fas fa-times"></i></button>
+
+      <div class="modal-header">
+        <div class="modal-icon"><i class="fas fa-taxi"></i></div>
+        <h2 id="modal-title">Booking Confirmed! 🎉</h2>
+        <p>Your driver is on the way</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-route">
+          <div class="modal-loc">
+            <span class="dot dot-green"></span>
+            <div>
+              <span class="modal-loc-label">Pick-up</span>
+              <span class="modal-loc-val" id="modal-pickup">—</span>
+            </div>
+          </div>
+          <div class="modal-route-line"></div>
+          <div class="modal-loc">
+            <span class="dot dot-black"></span>
+            <div>
+              <span class="modal-loc-label">Drop-off</span>
+              <span class="modal-loc-val" id="modal-dropoff">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <i class="fas fa-calendar"></i>
+            <div>
+              <span class="modal-stat-label">Date &amp; Time</span>
+              <span class="modal-stat-val" id="modal-datetime">—</span>
+            </div>
+          </div>
+          <div class="modal-stat">
+            <i class="fas fa-road"></i>
+            <div>
+              <span class="modal-stat-label">Distance</span>
+              <span class="modal-stat-val" id="modal-distance">—</span>
+            </div>
+          </div>
+          <div class="modal-stat">
+            <i class="fas fa-clock"></i>
+            <div>
+              <span class="modal-stat-label">Est. Duration</span>
+              <span class="modal-stat-val" id="modal-duration">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-fare-box">
+          <div class="modal-fare-breakdown">
+            <div class="modal-fare-row">
+              <span>Base Fare</span>
+              <span>₱ 40.00</span>
+            </div>
+            <div class="modal-fare-row">
+              <span>Distance Charge</span>
+              <span id="modal-dist-charge">₱ 0.00</span>
+            </div>
+          </div>
+          <div class="modal-fare-total-row">
+            <span>Total Estimated Fare</span>
+            <span id="modal-total">₱ 40.00</span>
+          </div>
+        </div>
+
+        <!-- Driver Info -->
+        <div class="modal-driver">
+          <div class="modal-driver-photo">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="modal-driver-info">
+            <span class="modal-driver-badge"><span class="status-dot"></span> On the way</span>
+            <span class="modal-driver-name">Mr. Juan Dela Cruz</span>
+            <span class="modal-driver-sub">
+              <i class="fas fa-car"></i> Toyota Vios &nbsp;·&nbsp;
+              <span class="plate-badge" style="font-size:0.72rem;padding:2px 7px;">ABC 1234</span>
+            </span>
+            <span class="modal-driver-sub"><span class="stars" style="font-size:0.8rem;">★★★★★</span> 5.0 &nbsp;·&nbsp;
+              10 yrs experience</span>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="payment-section">
+          <span class="adv-label"><i class="fas fa-wallet"></i> Payment Method</span>
+          <div class="payment-toggle">
+            <button class="pay-btn active" id="pay-cash">
+              <i class="fas fa-money-bill-wave"></i> Cash
+            </button>
+            <button class="pay-btn" id="pay-gcash">
+              <p>GCash</p>
+            </button>
+          </div>
+
+          <!-- Cash info -->
+          <div class="payment-info" id="cash-info">
+            <i class="fas fa-circle-info"></i>
+            Please prepare the exact amount. Pay your driver upon arrival.
+          </div>
+
+          <!-- GCash QR -->
+          <div class="payment-info gcash-info" id="gcash-info" style="display:none;">
+            <div class="qr-wrapper">
+              <div class="qr-header">
+                <span class="qr-title">Scan to Pay</span>
+              </div>
+              <!-- Demo QR Code using QR Server API -->
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://gcash.com/pay/ezride-demo&color=0d5bdd&bgcolor=ffffff&qzone=1"
+                alt="GCash QR Code" class="qr-img" />
+              <div class="qr-details">
+                <span class="qr-name">EZ Ride Taxi</span>
+                <span class="qr-number">09XX XXX XXXX</span>
+                <span class="qr-amount" id="qr-amount">₱ 40.00</span>
+              </div>
+              <p class="qr-note">This is a demo QR code for presentation purposes only.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="modal-note"><i class="fas fa-circle-info"></i> Final fare may vary based on actual route and traffic
+          conditions.</p>
+      </div>
+
+      <button class="cta-btn cta-wide modal-ok-btn" id="modal-ok">Got it, thanks! <i class="fas fa-check"></i></button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Rainbow Taxi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #eff6ff 100%);
+            padding: 1rem;
+        }
+
+        .signup-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .signup-header {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .signup-header-icon {
+            width: 3rem;
+            height: 3rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .signup-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+
+        .signup-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+            margin: 0.5rem 0 0;
+        }
+
+        .signup-content {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-group-signup {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .form-group-signup label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group-signup input,
+        .form-group-signup select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group-signup input:focus,
+        .form-group-signup select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .form-group-signup input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row .form-group-signup {
+            margin-bottom: 0;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .terms-checkbox input {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+            margin-top: 0.1rem;
+        }
+
+        .terms-checkbox a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        .btn-signup:hover {
+            background-color: #1d4ed8;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e5e7eb;
+        }
+
+        .divider span {
+            background-color: white;
+            padding: 0 0.75rem;
+            position: relative;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .social-signup {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-social {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .btn-social:hover {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .login-link a:hover {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <div class="signup-header-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h1>Rainbow Taxi</h1>
+                <p>Create your account</p>
+            </div>
+
+            <div class="signup-content">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group-signup">
+                            <label for="firstname">First Name</label>
+                            <input type="text" id="firstname" placeholder="First name" required>
+                        </div>
+                        <div class="form-group-signup">
+                            <label for="lastname">Last Name</label>
+                            <input type="text" id="lastname" placeholder="Last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-signup">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group-signup">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+1 (555) 000-0000" required>
+                    </div>
+
+                    <div class="form-group-signup">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="form-group-signup">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="form-group-signup">
+                        <label for="usertype">Account Type</label>
+                        <select id="usertype" required>
+                            <option value="">Select account type</option>
+                            <option value="passenger">Passenger</option>
+                            <option value="driver">Driver</option>
+                        </select>
+                    </div>
+
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms" style="margin: 0;">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-signup">Create Account</button>
+                </form>
+
+                <div class="divider">
+                    <span>Or sign up with</span>
+                </div>
+
+                <div class="social-signup">
+                    <button type="button" class="btn-social">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="btn-social">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </button>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
